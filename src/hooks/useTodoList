@@ -1,9 +1,9 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { todoRreducer } from "../reducers/todoReducer";
 
 const init = () => {
-    //leer de local storage
-    return []
+    const storedTodos = localStorage.getItem("todos");
+    return storedTodos ? JSON.parse(storedTodos) : [];
 }
 
 
@@ -11,6 +11,9 @@ export const useTodoList = () => {
 
     const [todos, dispatch] = useReducer(todoRreducer, [], init);
 
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
 
     const handleNewTodo = (newTodo) => {
         const action = {
